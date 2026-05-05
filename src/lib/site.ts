@@ -11,7 +11,8 @@ export const siteConfig = {
   country: "PE",
   contact: {
     email: "hola@altokpe.com",
-    whatsapp: "",
+    whatsapp: "+51999999999",
+    whatsappDisplay: "+51 999 999 999",
   },
   social: {
     instagram: "https://instagram.com/altokpe",

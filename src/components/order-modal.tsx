@@ -1,0 +1,334 @@
+"use client";
+
+import * as React from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { X, MessageCircle, Loader2, ShieldCheck, Truck } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { product, type ProductPlan } from "@/lib/product";
+import { buildOrderMessage, buildWhatsAppUrl } from "@/lib/whatsapp";
+import { cn } from "@/lib/utils";
+
+type OrderContextValue = {
+  open: (planId?: string) => void;
+  close: () => void;
+};
+
+const OrderContext = React.createContext<OrderContextValue | null>(null);
+
+export function useOrder() {
+  const ctx = React.useContext(OrderContext);
+  if (!ctx) throw new Error("useOrder must be used within OrderProvider");
+  return ctx;
+}
+
+const orderSchema = z.object({
+  name: z.string().min(2, "Ingresa tu nombre completo"),
+  phone: z
+    .string()
+    .min(9, "El número debe tener al menos 9 dígitos")
+    .regex(/^[0-9+\s]+$/, "Solo números"),
+  district: z.string().min(2, "Indica tu distrito"),
+  address: z.string().min(5, "Ingresa una dirección válida"),
+  reference: z.string().optional(),
+});
+
+type OrderFormValues = z.infer<typeof orderSchema>;
+
+export function OrderProvider({ children }: { children: React.ReactNode }) {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [selectedPlanId, setSelectedPlanId] = React.useState<string>(
+    product.plans.find((p) => p.highlight)?.id ?? product.plans[0].id,
+  );
+
+  const open = React.useCallback((planId?: string) => {
+    if (planId) setSelectedPlanId(planId);
+    setIsOpen(true);
+  }, []);
+  const close = React.useCallback(() => setIsOpen(false), []);
+
+  const value = React.useMemo(() => ({ open, close }), [open, close]);
+
+  return (
+    <OrderContext.Provider value={value}>
+      {children}
+      <OrderModal
+        isOpen={isOpen}
+        onClose={close}
+        selectedPlanId={selectedPlanId}
+        onChangePlan={setSelectedPlanId}
+      />
+    </OrderContext.Provider>
+  );
+}
+
+type OrderModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  selectedPlanId: string;
+  onChangePlan: (planId: string) => void;
+};
+
+function OrderModal({
+  isOpen,
+  onClose,
+  selectedPlanId,
+  onChangePlan,
+}: OrderModalProps) {
+  const selectedPlan =
+    product.plans.find((p) => p.id === selectedPlanId) ?? product.plans[0];
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<OrderFormValues>({
+    resolver: zodResolver(orderSchema),
+  });
+
+  React.useEffect(() => {
+    if (!isOpen) reset();
+  }, [isOpen, reset]);
+
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [isOpen, onClose]);
+
+  async function onSubmit(values: OrderFormValues) {
+    const message = buildOrderMessage({
+      ...values,
+      planLabel: selectedPlan.label,
+      units: selectedPlan.units,
+      price: selectedPlan.price,
+    });
+    const url = buildWhatsAppUrl(message);
+    window.open(url, "_blank", "noopener,noreferrer");
+    onClose();
+  }
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={onClose}
+          />
+
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 40, scale: 0.98 }}
+            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            className="relative z-10 w-full max-w-lg overflow-hidden rounded-t-3xl bg-card text-card-foreground shadow-2xl sm:rounded-3xl"
+          >
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
+              <div>
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Confirma tu pedido
+                </p>
+                <p className="text-base font-semibold">{product.name}</p>
+              </div>
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Cerrar"
+                className="grid h-9 w-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/5"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 px-6 py-6">
+              <fieldset className="space-y-2">
+                <legend className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  Elige tu plan
+                </legend>
+                <div className="grid gap-2">
+                  {product.plans.map((plan) => (
+                    <PlanOption
+                      key={plan.id}
+                      plan={plan}
+                      selected={plan.id === selectedPlan.id}
+                      onSelect={() => onChangePlan(plan.id)}
+                    />
+                  ))}
+                </div>
+              </fieldset>
+
+              <div className="grid gap-4">
+                <Field
+                  label="Nombre y apellido"
+                  error={errors.name?.message}
+                  {...register("name")}
+                  placeholder="Juan Pérez"
+                  autoComplete="name"
+                />
+                <Field
+                  label="Celular"
+                  error={errors.phone?.message}
+                  {...register("phone")}
+                  placeholder="999 999 999"
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                />
+                <Field
+                  label="Distrito"
+                  error={errors.district?.message}
+                  {...register("district")}
+                  placeholder="Miraflores"
+                />
+                <Field
+                  label="Dirección"
+                  error={errors.address?.message}
+                  {...register("address")}
+                  placeholder="Av. Ejemplo 123, Dpto 4"
+                  autoComplete="street-address"
+                />
+                <Field
+                  label="Referencia (opcional)"
+                  error={errors.reference?.message}
+                  {...register("reference")}
+                  placeholder="Frente al parque, edificio azul"
+                />
+              </div>
+
+              <div className="flex items-center gap-4 rounded-2xl bg-muted/60 px-4 py-3 text-xs text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck size={14} className="text-success" />
+                  <span>Pago contraentrega o Yape</span>
+                </div>
+                <div className="hidden h-4 w-px bg-border sm:block" />
+                <div className="flex items-center gap-2">
+                  <Truck size={14} className="text-primary" />
+                  <span>Envío a todo Lima</span>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-3 border-t border-border pt-4">
+                <div className="flex items-baseline justify-between">
+                  <span className="text-sm text-muted-foreground">Total</span>
+                  <span className="text-2xl font-semibold">
+                    S/ {selectedPlan.price.toFixed(2)}
+                  </span>
+                </div>
+                <Button type="submit" size="lg" disabled={isSubmitting} className="w-full">
+                  {isSubmitting ? (
+                    <Loader2 size={18} className="animate-spin" />
+                  ) : (
+                    <MessageCircle size={18} />
+                  )}
+                  Confirmar por WhatsApp
+                </Button>
+                <p className="text-center text-xs text-muted-foreground">
+                  Te llevamos a WhatsApp con tu pedido listo. Confirmamos por chat.
+                </p>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+type PlanOptionProps = {
+  plan: ProductPlan;
+  selected: boolean;
+  onSelect: () => void;
+};
+
+function PlanOption({ plan, selected, onSelect }: PlanOptionProps) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      className={cn(
+        "flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition-all",
+        selected
+          ? "border-primary bg-primary/5"
+          : "border-border bg-transparent hover:border-foreground/30",
+      )}
+    >
+      <div className="flex items-center gap-3">
+        <span
+          className={cn(
+            "grid h-5 w-5 place-items-center rounded-full border-2 transition-colors",
+            selected ? "border-primary bg-primary" : "border-border",
+          )}
+        >
+          {selected && <span className="h-2 w-2 rounded-full bg-primary-foreground" />}
+        </span>
+        <div className="space-y-0.5">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium">{plan.label}</span>
+            {plan.badge && (
+              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
+                {plan.badge}
+              </span>
+            )}
+          </div>
+          {plan.savings && (
+            <p className="text-xs text-success">{plan.savings}</p>
+          )}
+        </div>
+      </div>
+      <div className="text-right">
+        <p className="text-sm font-semibold">S/ {plan.price.toFixed(2)}</p>
+        <p className="text-xs text-muted-foreground">
+          S/ {plan.pricePerUnit.toFixed(2)} c/u
+        </p>
+      </div>
+    </button>
+  );
+}
+
+type FieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  label: string;
+  error?: string;
+};
+
+const Field = React.forwardRef<HTMLInputElement, FieldProps>(
+  ({ label, error, className, ...props }, ref) => {
+    return (
+      <label className="block">
+        <span className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          {label}
+        </span>
+        <input
+          ref={ref}
+          className={cn(
+            "w-full rounded-xl border bg-background px-4 py-3 text-sm outline-none transition-colors",
+            "placeholder:text-muted-foreground/60",
+            "focus:border-primary focus:ring-2 focus:ring-primary/20",
+            error ? "border-red-500" : "border-border",
+            className,
+          )}
+          {...props}
+        />
+        {error && (
+          <span className="mt-1 block text-xs text-red-500">{error}</span>
+        )}
+      </label>
+    );
+  },
+);
+
+Field.displayName = "Field";
