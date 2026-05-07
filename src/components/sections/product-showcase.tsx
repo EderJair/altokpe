@@ -85,7 +85,7 @@ export function ProductShowcase() {
               ar
               ar-modes="webxr scene-viewer quick-look"
               ar-scale="auto"
-              camera-orbit="0deg 80deg 115%"
+              camera-orbit="0deg 80deg 130%"
               field-of-view="30deg"
               loading="eager"
               reveal="auto"

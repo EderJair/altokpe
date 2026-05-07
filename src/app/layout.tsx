@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { PageIntro } from "@/components/page-intro";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -69,7 +70,10 @@ export default function RootLayout({
       lang="es-PE"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">
+        <PageIntro />
+        {children}
+      </body>
     </html>
   );
 }

@@ -121,7 +121,7 @@ export function Hero() {
             style={{ y: productY }}
             className="relative lg:col-span-5"
           >
-            <div className="relative mx-auto w-full max-w-lg">
+            <div className="relative mx-auto w-full max-w-xl">
               <ProductShowcase />
             </div>
 
