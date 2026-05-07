@@ -136,14 +136,16 @@ function OrderModal({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 40, scale: 0.98 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="relative z-10 w-full max-w-lg overflow-hidden rounded-t-3xl bg-card text-card-foreground shadow-2xl sm:rounded-3xl"
+            className="relative z-10 max-h-[92svh] w-full max-w-3xl overflow-y-auto rounded-t-3xl bg-card text-card-foreground shadow-2xl sm:rounded-3xl"
           >
-            <div className="flex items-center justify-between border-b border-border px-6 py-4">
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card/95 px-6 py-4 backdrop-blur sm:px-8">
               <div>
-                <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                  Confirma tu pedido
+                <p className="text-eyebrow text-muted-foreground">
+                  {"// Confirma tu pedido"}
                 </p>
-                <p className="text-base font-semibold">{product.name}</p>
+                <p className="mt-1 text-lg font-semibold tracking-tight">
+                  {product.name}
+                </p>
               </div>
               <button
                 type="button"
@@ -155,12 +157,15 @@ function OrderModal({
               </button>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 px-6 py-6">
-              <fieldset className="space-y-2">
-                <legend className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="space-y-7 px-6 py-7 sm:px-8 sm:py-8"
+            >
+              <fieldset className="space-y-3">
+                <legend className="text-eyebrow text-muted-foreground">
                   Elige tu plan
                 </legend>
-                <div className="grid gap-2">
+                <div className="grid gap-3 sm:grid-cols-3">
                   {product.plans.map((plan) => (
                     <PlanOption
                       key={plan.id}
@@ -172,45 +177,56 @@ function OrderModal({
                 </div>
               </fieldset>
 
-              <div className="grid gap-4">
-                <Field
-                  label="Nombre y apellido"
-                  error={errors.name?.message}
-                  {...register("name")}
-                  placeholder="Juan Pérez"
-                  autoComplete="name"
-                />
-                <Field
-                  label="Celular"
-                  error={errors.phone?.message}
-                  {...register("phone")}
-                  placeholder="999 999 999"
-                  type="tel"
-                  inputMode="tel"
-                  autoComplete="tel"
-                />
-                <Field
-                  label="Distrito"
-                  error={errors.district?.message}
-                  {...register("district")}
-                  placeholder="Miraflores"
-                />
-                <Field
-                  label="Dirección"
-                  error={errors.address?.message}
-                  {...register("address")}
-                  placeholder="Av. Ejemplo 123, Dpto 4"
-                  autoComplete="street-address"
-                />
-                <Field
-                  label="Referencia (opcional)"
-                  error={errors.reference?.message}
-                  {...register("reference")}
-                  placeholder="Frente al parque, edificio azul"
-                />
-              </div>
+              <fieldset className="space-y-3">
+                <legend className="text-eyebrow text-muted-foreground">
+                  Tus datos
+                </legend>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="sm:col-span-2">
+                    <Field
+                      label="Nombre y apellido"
+                      error={errors.name?.message}
+                      {...register("name")}
+                      placeholder="Juan Pérez"
+                      autoComplete="name"
+                    />
+                  </div>
+                  <Field
+                    label="Celular"
+                    error={errors.phone?.message}
+                    {...register("phone")}
+                    placeholder="999 999 999"
+                    type="tel"
+                    inputMode="tel"
+                    autoComplete="tel"
+                  />
+                  <Field
+                    label="Distrito"
+                    error={errors.district?.message}
+                    {...register("district")}
+                    placeholder="Miraflores"
+                  />
+                  <div className="sm:col-span-2">
+                    <Field
+                      label="Dirección"
+                      error={errors.address?.message}
+                      {...register("address")}
+                      placeholder="Av. Ejemplo 123, Dpto 4"
+                      autoComplete="street-address"
+                    />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <Field
+                      label="Referencia (opcional)"
+                      error={errors.reference?.message}
+                      {...register("reference")}
+                      placeholder="Frente al parque, edificio azul"
+                    />
+                  </div>
+                </div>
+              </fieldset>
 
-              <div className="flex items-center gap-4 rounded-2xl bg-muted/60 px-4 py-3 text-xs text-muted-foreground">
+              <div className="flex flex-wrap items-center gap-4 rounded-2xl bg-muted/60 px-5 py-3 text-xs text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <ShieldCheck size={14} className="text-success" />
                   <span>Pago contraentrega o Yape</span>
@@ -220,16 +236,30 @@ function OrderModal({
                   <Truck size={14} className="text-primary" />
                   <span>Envío a todo Lima</span>
                 </div>
+                <div className="hidden h-4 w-px bg-border sm:block" />
+                <div className="flex items-center gap-2">
+                  <MessageCircle size={14} className="text-foreground/70" />
+                  <span>Confirmamos por WhatsApp</span>
+                </div>
               </div>
 
-              <div className="flex flex-col gap-3 border-t border-border pt-4">
-                <div className="flex items-baseline justify-between">
-                  <span className="text-sm text-muted-foreground">Total</span>
-                  <span className="text-2xl font-semibold">
-                    S/ {selectedPlan.price.toFixed(2)}
+              <div className="flex flex-col gap-4 border-t border-border pt-5 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-baseline gap-3">
+                  <span className="text-eyebrow text-muted-foreground">
+                    Total
+                  </span>
+                  <span className="text-display text-3xl">
+                    S/<span className="text-primary">
+                      {selectedPlan.price.toFixed(2)}
+                    </span>
                   </span>
                 </div>
-                <Button type="submit" size="lg" disabled={isSubmitting} className="w-full">
+                <Button
+                  type="submit"
+                  size="lg"
+                  disabled={isSubmitting}
+                  className="w-full sm:w-auto"
+                >
                   {isSubmitting ? (
                     <Loader2 size={18} className="animate-spin" />
                   ) : (
@@ -237,10 +267,10 @@ function OrderModal({
                   )}
                   Confirmar por WhatsApp
                 </Button>
-                <p className="text-center text-xs text-muted-foreground">
-                  Te llevamos a WhatsApp con tu pedido listo. Confirmamos por chat.
-                </p>
               </div>
+              <p className="text-center text-xs text-muted-foreground">
+                Te llevamos a WhatsApp con tu pedido listo. Confirmamos por chat.
+              </p>
             </form>
           </motion.div>
         </div>
@@ -261,40 +291,51 @@ function PlanOption({ plan, selected, onSelect }: PlanOptionProps) {
       type="button"
       onClick={onSelect}
       className={cn(
-        "flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition-all",
+        "group relative flex h-full flex-col rounded-2xl border p-4 text-left transition-all sm:p-5",
         selected
           ? "border-primary bg-primary/5"
           : "border-border bg-transparent hover:border-foreground/30",
       )}
     >
-      <div className="flex items-center gap-3">
+      {plan.badge && (
         <span
           className={cn(
-            "grid h-5 w-5 place-items-center rounded-full border-2 transition-colors",
+            "absolute -top-2 right-3 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider",
+            selected
+              ? "bg-primary text-primary-foreground"
+              : "bg-foreground text-background",
+          )}
+        >
+          {plan.badge}
+        </span>
+      )}
+
+      <div className="flex items-center gap-2.5">
+        <span
+          className={cn(
+            "grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 transition-colors",
             selected ? "border-primary bg-primary" : "border-border",
           )}
         >
-          {selected && <span className="h-2 w-2 rounded-full bg-primary-foreground" />}
-        </span>
-        <div className="space-y-0.5">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium">{plan.label}</span>
-            {plan.badge && (
-              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
-                {plan.badge}
-              </span>
-            )}
-          </div>
-          {plan.savings && (
-            <p className="text-xs text-success">{plan.savings}</p>
+          {selected && (
+            <span className="h-2 w-2 rounded-full bg-primary-foreground" />
           )}
-        </div>
+        </span>
+        <span className="text-sm font-semibold">{plan.label}</span>
       </div>
-      <div className="text-right">
-        <p className="text-sm font-semibold">S/ {plan.price.toFixed(2)}</p>
-        <p className="text-xs text-muted-foreground">
-          S/ {plan.pricePerUnit.toFixed(2)} c/u
+
+      <div className="mt-auto pt-4">
+        <p className="text-display text-3xl leading-none">
+          S/<span className={selected ? "text-primary" : "text-foreground"}>
+            {plan.price}
+          </span>
         </p>
+        <p className="mt-2 text-xs text-muted-foreground">
+          S/ {plan.pricePerUnit.toFixed(2)} por unidad
+        </p>
+        {plan.savings && (
+          <p className="mt-1 text-xs font-medium text-success">{plan.savings}</p>
+        )}
       </div>
     </button>
   );
