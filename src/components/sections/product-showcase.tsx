@@ -16,7 +16,7 @@ const stains = [
 
 export function ProductShowcase() {
   return (
-    <div className="relative mx-auto aspect-[4/5] w-full max-w-md">
+    <div className="relative mx-auto aspect-square w-full max-w-md">
       {/* Soft gradient halo behind product */}
       <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-foreground/[0.03] via-transparent to-primary/10" />
 
@@ -33,14 +33,14 @@ export function ProductShowcase() {
             ))}
           </div>
 
-          {/* The product image — replace /products/quitamanchas.svg with a real PNG when available */}
+          {/* Product image. Replace /products/quitamanchas.png with the final shoot when ready. */}
           <Image
-            src="/products/quitamanchas.svg"
+            src="/products/quitamanchas.png"
             alt="Quitamanchas Portátil AlTokPe"
             fill
             priority
             sizes="(max-width: 768px) 90vw, 480px"
-            className="object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.18)]"
+            className="object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.22)]"
           />
         </motion.div>
       </div>
