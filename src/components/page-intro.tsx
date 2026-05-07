@@ -1,52 +1,26 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
-const SESSION_KEY = "altokpe-intro-shown";
-const HOLD_MS = 2400;
+const HOLD_MS = 3000;
 const EXIT_MS = 900;
 
-function subscribe() {
-  // sessionStorage doesn't emit change events for this tab — no-op subscription
-  return () => {};
-}
-
-function getSnapshot() {
-  return sessionStorage.getItem(SESSION_KEY) === "1";
-}
-
-function getServerSnapshot() {
-  return false;
-}
-
 export function PageIntro() {
-  const alreadyShown = useSyncExternalStore(
-    subscribe,
-    getSnapshot,
-    getServerSnapshot,
-  );
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    if (alreadyShown) return;
-    const timer = setTimeout(() => {
-      sessionStorage.setItem(SESSION_KEY, "1");
-      setDismissed(true);
-    }, HOLD_MS);
+    const timer = setTimeout(() => setDismissed(true), HOLD_MS);
     return () => clearTimeout(timer);
-  }, [alreadyShown]);
+  }, []);
 
   function dismiss() {
-    sessionStorage.setItem(SESSION_KEY, "1");
     setDismissed(true);
   }
 
-  const visible = !alreadyShown && !dismissed;
-
   return (
     <AnimatePresence>
-      {visible && (
+      {!dismissed && (
         <motion.div
           key="page-intro"
           initial={{ y: 0 }}
@@ -111,9 +85,7 @@ export function PageIntro() {
 
           {/* bottom hint */}
           <div className="absolute inset-x-0 bottom-10 text-center">
-            <p className="text-eyebrow opacity-50">
-              Toca para entrar
-            </p>
+            <p className="text-eyebrow opacity-50">Toca para entrar</p>
           </div>
         </motion.div>
       )}
