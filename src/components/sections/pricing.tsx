@@ -1,118 +1,172 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Check, Truck, Star, ShieldCheck } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { product } from "@/lib/product";
 import { useOrder } from "@/components/order-modal";
 import { cn } from "@/lib/utils";
+
+const ease = [0.22, 1, 0.36, 1] as const;
+
+const planFeatures: Record<string, string[]> = {
+  single: [
+    "1 unidad de Quitamanchas",
+    "Envío estándar a Lima (S/10)",
+    "Pago contraentrega o Yape",
+    "Garantía 7 días",
+  ],
+  duo: [
+    "2 unidades de Quitamanchas",
+    "Envío estándar a Lima (S/10)",
+    "Pago contraentrega o Yape",
+    "Garantía 7 días extendida",
+    "Ahorras S/21 vs unidades sueltas",
+  ],
+  trio: [
+    "3 unidades de Quitamanchas",
+    "Envío gratis a Lima",
+    "Pago contraentrega o Yape",
+    "Garantía 7 días extendida",
+    "Ahorras S/46 vs unidades sueltas",
+  ],
+};
 
 export function Pricing() {
   const { open } = useOrder();
 
   return (
-    <section id="precios" className="relative py-24 sm:py-32">
-      <Container>
-        <div className="mx-auto max-w-2xl text-center">
-          <Badge variant="primary" className="mb-4">
-            Compra al toke
-          </Badge>
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-            Lleva más, paga menos.
-          </h2>
-          <p className="mt-4 text-base text-muted-foreground sm:text-lg">
-            Compra contraentrega o por Yape. Sin cuenta, sin vueltas.
-          </p>
+    <section
+      id="precios"
+      className="section-dark relative overflow-hidden py-24 sm:py-40"
+    >
+      <div aria-hidden className="absolute inset-0 bg-stripes-grid pointer-events-none" />
+      <div
+        aria-hidden
+        className="absolute -left-20 top-1/3 h-72 w-[40rem] -rotate-12 bg-stripes opacity-30"
+      />
+
+      <Container size="xl" className="relative z-10">
+        <div className="mb-16 grid items-end gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-3">
+            <p className="text-eyebrow text-primary">{"// Precios"}</p>
+          </div>
+          <div className="lg:col-span-9">
+            <h2 className="text-display text-[clamp(2.5rem,8vw,7rem)]">
+              Lleva más,
+              <br />
+              <span className="text-foreground/30">paga menos</span>
+              <span className="text-primary">.</span>
+            </h2>
+            <p className="mt-6 max-w-xl text-base text-foreground/60 sm:text-lg">
+              Compra contraentrega o por Yape. Sin cuenta, sin vueltas.
+            </p>
+          </div>
         </div>
 
-        <div className="mx-auto mt-16 grid max-w-5xl gap-6 lg:grid-cols-3">
+        <div className="grid gap-px overflow-hidden border border-foreground/10 bg-foreground/10 lg:grid-cols-3">
           {product.plans.map((plan, index) => (
             <motion.div
               key={plan.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.6, delay: index * 0.1, ease }}
               className={cn(
-                "relative flex flex-col rounded-3xl border bg-card p-8 transition-all",
+                "relative flex flex-col gap-8 p-8 transition-all sm:p-10",
                 plan.highlight
-                  ? "border-primary/40 shadow-[0_20px_60px_-20px_rgba(255,87,34,0.4)] lg:scale-105"
-                  : "border-border hover:border-foreground/20",
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-background hover:bg-muted",
               )}
             >
               {plan.badge && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span
-                    className={cn(
-                      "rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide",
-                      plan.highlight
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-foreground text-background",
-                    )}
-                  >
-                    {plan.badge}
-                  </span>
+                <div
+                  className={cn(
+                    "absolute right-6 top-6 rotate-3 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider",
+                    plan.highlight
+                      ? "bg-background text-primary"
+                      : "bg-primary text-primary-foreground",
+                  )}
+                >
+                  {plan.badge}
                 </div>
               )}
 
-              <div className="text-center">
-                <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
-                  {plan.label}
+              <div className="flex items-baseline justify-between">
+                <p className={cn("text-eyebrow", plan.highlight ? "opacity-80" : "text-foreground/60")}>
+                  Plan 0{index + 1}
                 </p>
-                <div className="mt-4 flex items-baseline justify-center gap-1">
-                  <span className="text-sm text-muted-foreground">S/</span>
-                  <span className="text-5xl font-bold tracking-tight">
-                    {plan.price}
-                  </span>
-                </div>
-                <p className="mt-2 text-xs text-muted-foreground">
-                  S/ {plan.pricePerUnit.toFixed(2)} por unidad
+                <p className={cn("text-display text-2xl", plan.highlight ? "" : "text-foreground/30")}>
+                  {plan.units}×
                 </p>
-                {plan.savings && (
-                  <p className="mt-2 text-sm font-medium text-success">
-                    {plan.savings}
-                  </p>
-                )}
               </div>
 
-              <ul className="mt-8 space-y-3 text-sm">
-                <li className="flex items-start gap-3">
-                  <Check size={18} className="mt-0.5 flex-shrink-0 text-success" />
-                  <span>
-                    {plan.units} {plan.units === 1 ? "unidad" : "unidades"} de Quitamanchas Portátil
+              <div>
+                <p className={cn("text-eyebrow", plan.highlight ? "opacity-80" : "text-foreground/60")}>
+                  {plan.label}
+                </p>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span className={cn("text-display text-7xl sm:text-8xl", plan.highlight ? "" : "")}>
+                    {plan.price}
                   </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Truck size={18} className={cn("mt-0.5 flex-shrink-0", plan.freeShipping ? "text-success" : "text-muted-foreground")} />
-                  <span>
-                    {plan.freeShipping
-                      ? "Envío gratis a todo Lima"
-                      : "Envío estándar S/ 10 a Lima"}
+                  <span className={cn("text-2xl font-bold", plan.highlight ? "opacity-80" : "text-foreground/40")}>
+                    soles
                   </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <ShieldCheck size={18} className="mt-0.5 flex-shrink-0 text-success" />
-                  <span>Pago contraentrega o Yape</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <Star size={18} className="mt-0.5 flex-shrink-0 text-success" />
-                  <span>Garantía: si no funciona, te devolvemos tu dinero</span>
-                </li>
+                </div>
+                <p
+                  className={cn(
+                    "mt-2 text-sm",
+                    plan.highlight ? "opacity-75" : "text-foreground/50",
+                  )}
+                >
+                  S/ {plan.pricePerUnit.toFixed(2)} por unidad
+                  {plan.savings && ` · ${plan.savings}`}
+                </p>
+              </div>
+
+              <ul className="space-y-3 text-sm">
+                {planFeatures[plan.id]?.map((feature) => (
+                  <li key={feature} className="flex items-start gap-3">
+                    <Check
+                      size={16}
+                      className={cn(
+                        "mt-0.5 flex-shrink-0",
+                        plan.highlight ? "" : "text-primary",
+                      )}
+                    />
+                    <span
+                      className={cn(
+                        plan.highlight ? "opacity-90" : "text-foreground/80",
+                      )}
+                    >
+                      {feature}
+                    </span>
+                  </li>
+                ))}
               </ul>
 
-              <Button
-                size="lg"
-                variant={plan.highlight ? "primary" : "outline"}
+              <button
                 onClick={() => open(plan.id)}
-                className="mt-8 w-full"
+                className={cn(
+                  "group mt-auto flex items-center justify-between px-6 py-4 text-xs font-semibold uppercase tracking-wider transition-all",
+                  plan.highlight
+                    ? "bg-background text-foreground hover:bg-foreground hover:text-background"
+                    : "bg-foreground text-background hover:bg-primary hover:text-primary-foreground",
+                )}
               >
-                Comprar al toke
-              </Button>
+                <span>Comprar al toke</span>
+                <ArrowRight
+                  size={16}
+                  className="transition-transform group-hover:translate-x-1"
+                />
+              </button>
             </motion.div>
           ))}
         </div>
+
+        <p className="mt-8 text-center text-sm text-foreground/50">
+          Garantía 7 días: si no quedaste contento, te devolvemos el 100%.
+        </p>
       </Container>
     </section>
   );

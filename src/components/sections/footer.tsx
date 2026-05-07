@@ -4,27 +4,64 @@ import { siteConfig } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-muted/40">
-      <Container size="xl" className="py-16">
-        <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+    <footer className="section-dark relative overflow-hidden">
+      {/* Big statement marquee */}
+      <div className="relative overflow-hidden border-b border-foreground/10 py-12 sm:py-16">
+        <div className="flex gap-12 whitespace-nowrap animate-marquee-reverse">
+          {Array.from({ length: 4 }).map((_, group) => (
+            <div key={group} className="flex shrink-0 items-center gap-12">
+              <span className="text-display text-[clamp(4rem,16vw,16rem)] leading-none text-foreground/[0.08]">
+                AlTokPe
+              </span>
+              <span className="text-display text-[clamp(4rem,16vw,16rem)] leading-none text-primary/30">
+                ★
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <Container size="xl" className="relative z-10 py-16">
+        <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
           <div>
             <div className="flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-foreground text-background">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path
-                    d="M5 13l4 4L19 7"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+              <span className="grid h-9 w-9 place-items-center rounded-md bg-primary text-primary-foreground">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M5 13l4 4L19 7" />
                 </svg>
               </span>
-              <span className="text-lg font-bold tracking-tight">{siteConfig.name}</span>
+              <span className="text-base font-bold tracking-tight">
+                {siteConfig.name}
+              </span>
             </div>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-foreground/60">
               {siteConfig.description}
             </p>
+
+            <div className="mt-8 flex items-center gap-3">
+              <SocialLink href={`https://wa.me/${siteConfig.contact.whatsapp.replace(/[^\d]/g, "")}`}>
+                <MessageCircle size={16} />
+              </SocialLink>
+              <SocialLink href={siteConfig.social.instagram}>
+                <InstagramIcon className="h-4 w-4" />
+              </SocialLink>
+              <SocialLink href={siteConfig.social.tiktok}>
+                <TikTokIcon className="h-4 w-4" />
+              </SocialLink>
+              <SocialLink href={`mailto:${siteConfig.contact.email}`}>
+                <Mail size={16} />
+              </SocialLink>
+            </div>
           </div>
 
           <FooterColumn title="Producto">
@@ -35,44 +72,26 @@ export function Footer() {
           </FooterColumn>
 
           <FooterColumn title="Ayuda">
-            <FooterLink href="#faq">Preguntas frecuentes</FooterLink>
+            <FooterLink href="#faq">FAQ</FooterLink>
             <FooterLink href={`mailto:${siteConfig.contact.email}`}>Contacto</FooterLink>
             <FooterLink href="#envios">Envíos</FooterLink>
             <FooterLink href="#devoluciones">Devoluciones</FooterLink>
           </FooterColumn>
 
-          <FooterColumn title="Conecta">
-            <FooterLink href={siteConfig.social.instagram} external>
-              <InstagramIcon className="h-3.5 w-3.5" />
-              Instagram
-            </FooterLink>
-            <FooterLink href={siteConfig.social.tiktok} external>
-              <TikTokIcon className="h-3.5 w-3.5" />
-              TikTok
-            </FooterLink>
-            <FooterLink href={`https://wa.me/${siteConfig.contact.whatsapp.replace(/[^\d]/g, "")}`} external>
-              <MessageCircle size={14} />
-              WhatsApp
-            </FooterLink>
-            <FooterLink href={`mailto:${siteConfig.contact.email}`}>
-              <Mail size={14} />
-              {siteConfig.contact.email}
-            </FooterLink>
+          <FooterColumn title="Legal">
+            <FooterLink href="#privacidad">Privacidad</FooterLink>
+            <FooterLink href="#terminos">Términos</FooterLink>
+            <FooterLink href="#cookies">Cookies</FooterLink>
           </FooterColumn>
         </div>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-border pt-8 sm:flex-row sm:items-center">
-          <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} {siteConfig.name}. Hecho en Perú.
+        <div className="mt-16 flex flex-col items-start justify-between gap-3 border-t border-foreground/10 pt-8 sm:flex-row sm:items-center">
+          <p className="text-eyebrow text-foreground/50">
+            © {new Date().getFullYear()} {siteConfig.name} · Hecho en Perú
           </p>
-          <div className="flex gap-6 text-xs text-muted-foreground">
-            <a href="#privacidad" className="hover:text-foreground">
-              Privacidad
-            </a>
-            <a href="#terminos" className="hover:text-foreground">
-              Términos
-            </a>
-          </div>
+          <p className="text-eyebrow text-foreground/50">
+            v1.0 · Lima, PE
+          </p>
         </div>
       </Container>
     </footer>
@@ -82,33 +101,35 @@ export function Footer() {
 function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-foreground">
-        {title}
-      </p>
-      <ul className="space-y-2.5 text-sm">{children}</ul>
+      <p className="mb-5 text-eyebrow text-foreground/50">{title}</p>
+      <ul className="space-y-3 text-sm">{children}</ul>
     </div>
   );
 }
 
-function FooterLink({
-  href,
-  external,
-  children,
-}: {
-  href: string;
-  external?: boolean;
-  children: React.ReactNode;
-}) {
+function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <li>
       <a
         href={href}
-        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-        className="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
+        className="text-foreground/80 transition-colors hover:text-primary"
       >
         {children}
       </a>
     </li>
+  );
+}
+
+function SocialLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="grid h-10 w-10 place-items-center border border-foreground/15 text-foreground/70 transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground"
+    >
+      {children}
+    </a>
   );
 }
 

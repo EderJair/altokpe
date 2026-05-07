@@ -2,11 +2,18 @@
 
 import { motion, useScroll, useMotionValueEvent } from "motion/react";
 import * as React from "react";
+import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/lib/site";
 import { useOrder } from "@/components/order-modal";
 import { cn } from "@/lib/utils";
+
+const nav = [
+  { label: "Producto", href: "#producto" },
+  { label: "Cómo funciona", href: "#como-funciona" },
+  { label: "Precios", href: "#precios" },
+  { label: "FAQ", href: "#faq" },
+];
 
 export function Header() {
   const [scrolled, setScrolled] = React.useState(false);
@@ -14,56 +21,79 @@ export function Header() {
   const { open } = useOrder();
 
   useMotionValueEvent(scrollY, "change", (y) => {
-    setScrolled(y > 16);
+    setScrolled(y > 32);
   });
 
   return (
     <motion.header
-      initial={{ y: -64, opacity: 0 }}
+      initial={{ y: -32, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
       className={cn(
-        "sticky top-0 z-40 w-full border-b transition-all duration-300",
-        scrolled
-          ? "border-border bg-background/80 backdrop-blur-lg"
-          : "border-transparent bg-transparent",
+        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
+        scrolled ? "pt-3" : "pt-6",
       )}
     >
-      <Container size="xl" className="flex h-16 items-center justify-between sm:h-20">
-        <a href="#top" className="flex items-center gap-2">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-foreground text-background">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M5 13l4 4L19 7"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-          <span className="text-lg font-bold tracking-tight">{siteConfig.name}</span>
-        </a>
+      <Container size="xl">
+        <div
+          className={cn(
+            "mx-auto flex h-14 items-center justify-between gap-4 transition-all duration-300",
+            scrolled
+              ? "max-w-3xl rounded-full border border-foreground/10 bg-background/80 px-4 shadow-sm backdrop-blur-xl"
+              : "max-w-full px-2",
+          )}
+        >
+          <a href="#top" className="flex items-center gap-2 group">
+            <div className="grid h-8 w-8 place-items-center rounded-md bg-primary text-primary-foreground">
+              <Logo />
+            </div>
+            <span className="text-sm font-bold tracking-tight">
+              {siteConfig.name}
+            </span>
+          </a>
 
-        <nav className="hidden items-center gap-8 text-sm font-medium md:flex">
-          <a href="#producto" className="text-muted-foreground transition-colors hover:text-foreground">
-            Producto
-          </a>
-          <a href="#como-funciona" className="text-muted-foreground transition-colors hover:text-foreground">
-            Cómo funciona
-          </a>
-          <a href="#precios" className="text-muted-foreground transition-colors hover:text-foreground">
-            Precios
-          </a>
-          <a href="#faq" className="text-muted-foreground transition-colors hover:text-foreground">
-            Preguntas
-          </a>
-        </nav>
+          <nav className="hidden items-center gap-7 md:flex">
+            {nav.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-eyebrow text-foreground/60 transition-colors hover:text-foreground"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
 
-        <Button size="sm" onClick={() => open()}>
-          Comprar al toke
-        </Button>
+          <button
+            onClick={() => open()}
+            className="group flex items-center gap-2 rounded-full bg-foreground px-5 py-2 text-xs font-semibold uppercase tracking-wider text-background transition-all hover:bg-primary hover:text-primary-foreground"
+          >
+            <span>Comprar</span>
+            <ArrowRight
+              size={14}
+              className="transition-transform group-hover:translate-x-0.5"
+            />
+          </button>
+        </div>
       </Container>
     </motion.header>
+  );
+}
+
+function Logo() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M5 13l4 4L19 7" />
+    </svg>
   );
 }

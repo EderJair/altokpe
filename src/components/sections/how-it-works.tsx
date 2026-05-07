@@ -1,50 +1,55 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Droplet, Sparkles, CheckCircle2 } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { Badge } from "@/components/ui/badge";
 
 const steps = [
   {
-    icon: Droplet,
+    number: "01",
     title: "Aplica",
     description:
-      "Pasa el roller con la fórmula directo sobre la mancha. No esperes a que se seque.",
+      "Pasa el roller con la fórmula directo sobre la mancha. No esperes a que se seque — mientras antes mejor.",
+    detail: "Roller con fórmula activa",
   },
   {
-    icon: Sparkles,
+    number: "02",
     title: "Frota suave",
     description:
-      "Da vuelta al producto y usa el cepillo de silicona para activar la fórmula sin dañar la tela.",
+      "Da vuelta al producto y usa el cepillo de silicona para activar la fórmula. Movimientos circulares, sin presión.",
+    detail: "Cepillo de silicona dual",
   },
   {
-    icon: CheckCircle2,
+    number: "03",
     title: "Mancha fuera",
     description:
-      "Seca con un paño limpio. La mancha desaparece en segundos, sin marcas ni decoloración.",
+      "Seca con un paño limpio. La mancha desaparece en segundos, sin marcas ni decoloración. Listo.",
+    detail: "Resultado en 3 segundos",
   },
 ];
 
+const ease = [0.22, 1, 0.36, 1] as const;
+
 export function HowItWorks() {
   return (
-    <section id="como-funciona" className="relative py-24 sm:py-32">
-      <Container>
-        <div className="mx-auto max-w-2xl text-center">
-          <Badge variant="primary" className="mb-4">
-            Cómo funciona
-          </Badge>
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-            Tres pasos. Cero manchas.
-          </h2>
-          <p className="mt-4 text-base text-muted-foreground sm:text-lg">
-            Diseñado para resolver el problema antes de que arruine tu día.
-          </p>
+    <section id="como-funciona" className="relative overflow-hidden py-24 sm:py-40">
+      <Container size="xl">
+        <div className="mb-20 grid items-end gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-3">
+            <p className="text-eyebrow text-primary">{"// Método"}</p>
+          </div>
+          <div className="lg:col-span-9">
+            <h2 className="text-display text-[clamp(2.5rem,8vw,7rem)]">
+              Tres pasos.
+              <br />
+              <span className="text-foreground/30">cero manchas</span>
+              <span className="text-primary">.</span>
+            </h2>
+          </div>
         </div>
 
-        <div className="mt-16 grid gap-8 md:grid-cols-3 md:gap-6 lg:gap-8">
+        <div className="space-y-px border border-foreground/10">
           {steps.map((step, index) => (
-            <Step key={step.title} step={step} index={index} />
+            <Step key={step.number} step={step} index={index} />
           ))}
         </div>
       </Container>
@@ -58,33 +63,42 @@ type StepProps = {
 };
 
 function Step({ step, index }: StepProps) {
-  const Icon = step.icon;
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-      className="relative"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.6, delay: index * 0.1, ease }}
+      className="group relative grid grid-cols-12 items-center gap-4 bg-background p-6 transition-colors hover:bg-muted sm:gap-8 sm:p-10 lg:p-14"
     >
-      <div className="group relative h-full overflow-hidden rounded-3xl border border-border bg-card p-8 transition-all hover:border-primary/40 hover:shadow-lg">
-        <div className="mb-6 flex items-center justify-between">
-          <span className="text-7xl font-bold leading-none text-foreground/5">
-            0{index + 1}
-          </span>
-          <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-primary transition-transform group-hover:scale-110">
-            <Icon size={22} />
-          </div>
-        </div>
-        <h3 className="text-xl font-semibold tracking-tight">{step.title}</h3>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+      <div className="col-span-3 sm:col-span-2">
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: index * 0.1 + 0.1, ease }}
+          className="text-display text-[clamp(2.5rem,8vw,7rem)] leading-none text-foreground/15 transition-colors group-hover:text-primary"
+        >
+          {step.number}
+        </motion.div>
+      </div>
+
+      <div className="col-span-9 flex flex-col gap-3 sm:col-span-7">
+        <h3 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+          {step.title}
+          <span className="text-primary">.</span>
+        </h3>
+        <p className="max-w-xl text-base leading-relaxed text-foreground/60 sm:text-lg">
           {step.description}
         </p>
       </div>
 
-      {index < steps.length - 1 && (
-        <div className="absolute left-full top-1/2 hidden h-px w-8 -translate-y-1/2 bg-gradient-to-r from-border to-transparent md:block" />
-      )}
+      <div className="col-span-12 mt-4 sm:col-span-3 sm:mt-0">
+        <div className="border-l border-foreground/15 pl-4 sm:pl-6">
+          <p className="text-eyebrow text-foreground/50">Detalle</p>
+          <p className="mt-2 text-sm font-medium">{step.detail}</p>
+        </div>
+      </div>
     </motion.div>
   );
 }
