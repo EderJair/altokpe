@@ -121,29 +121,30 @@ export function Hero() {
             style={{ y: productY }}
             className="relative lg:col-span-5"
           >
-            <div className="bracket-frame relative mx-auto w-full max-w-md">
+            <div className="bracket-frame relative mx-auto w-full max-w-lg">
               <ProductShowcase />
             </div>
 
-            {/* sticker price */}
+            {/* editorial price tag */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: -16 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease, delay: 0.9 }}
               style={{ rotate: stickerRotate }}
-              className="absolute -right-2 -top-4 grid h-28 w-28 place-items-center rounded-full bg-primary text-primary-foreground shadow-[0_12px_40px_-8px_rgba(255,87,34,0.6)] sm:h-32 sm:w-32"
+              className="absolute -right-2 top-4 origin-top-right text-right sm:-right-4 sm:top-8"
             >
-              <div className="text-center leading-none">
-                <p className="text-[9px] font-medium uppercase tracking-widest opacity-80">
-                  Desde
-                </p>
-                <p className="mt-1 text-3xl font-black tracking-tight">
-                  S/ {product.plans[0].price}
-                </p>
-                <p className="mt-1 text-[9px] font-medium uppercase tracking-widest opacity-80">
-                  Lima · 24h
-                </p>
-              </div>
+              <p className="text-eyebrow text-foreground/60">
+                {"// desde"}
+              </p>
+              <p className="text-display mt-2 text-5xl leading-none sm:text-6xl">
+                S/<span className="text-primary">
+                  {product.plans[0].price}
+                </span>
+              </p>
+              <div className="ml-auto mt-3 h-px w-14 bg-foreground/30" />
+              <p className="text-eyebrow mt-2 text-foreground/70">
+                Lima · 24h
+              </p>
             </motion.div>
 
             {/* serial number */}
