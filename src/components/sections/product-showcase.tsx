@@ -60,8 +60,8 @@ export function ProductShowcase() {
 
       <div className="absolute inset-0">
         <motion.div
-          initial={{ scale: 0.95, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
+          initial={{ scale: 0.95, opacity: 0, rotate: -8 }}
+          animate={{ scale: 1, opacity: 1, rotate: -8 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="relative h-full w-full"
         >
@@ -76,6 +76,7 @@ export function ProductShowcase() {
               auto-rotate-delay="500"
               rotation-per-second="22deg"
               camera-controls
+              disable-zoom
               interaction-prompt="none"
               shadow-intensity="0.7"
               shadow-softness="0.9"
@@ -84,10 +85,8 @@ export function ProductShowcase() {
               ar
               ar-modes="webxr scene-viewer quick-look"
               ar-scale="auto"
-              camera-orbit="20deg 80deg auto"
-              field-of-view="32deg"
-              min-camera-orbit="auto auto auto"
-              max-camera-orbit="auto auto auto"
+              camera-orbit="0deg 80deg 115%"
+              field-of-view="30deg"
               loading="eager"
               reveal="auto"
               style={{
@@ -108,14 +107,7 @@ export function ProductShowcase() {
 
 function PosterFallback() {
   return (
-    <motion.div
-      animate={{ rotate: -10, y: [0, -10, 0] }}
-      transition={{
-        rotate: { duration: 0 },
-        y: { duration: 4.5, repeat: Infinity, ease: "easeInOut" },
-      }}
-      className="relative h-full w-full"
-    >
+    <div className="relative h-full w-full">
       <Image
         src="/products/quitamanchas.png"
         alt="Quitamanchas Portátil AlTokPe"
@@ -124,6 +116,6 @@ function PosterFallback() {
         sizes="(max-width: 768px) 90vw, 640px"
         className="object-contain drop-shadow-[0_40px_50px_rgba(0,0,0,0.25)]"
       />
-    </motion.div>
+    </div>
   );
 }
