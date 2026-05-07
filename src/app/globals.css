@@ -129,6 +129,13 @@ body {
   background-size: 64px 64px;
 }
 
+.bg-stripes-grid-light {
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
 /* ============================================
    Bracket / corner frame
    ============================================ */

@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" width="400" height="600">
+  <defs>
+    <!-- Cylindrical body gradient (left dark → mid light → right dark) -->
+    <linearGradient id="atk-body" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7a1f08"/>
+      <stop offset="12%" stop-color="#b22d10"/>
+      <stop offset="28%" stop-color="#ff5722"/>
+      <stop offset="50%" stop-color="#ff8a5f"/>
+      <stop offset="72%" stop-color="#ff5722"/>
+      <stop offset="88%" stop-color="#b22d10"/>
+      <stop offset="100%" stop-color="#7a1f08"/>
+    </linearGradient>
+
+    <!-- Roller cap gradient (metallic green) -->
+    <linearGradient id="atk-cap" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="50%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+
+    <!-- Roller ball radial highlight -->
+    <radialGradient id="atk-roller" cx="0.35" cy="0.35" r="0.7">
+      <stop offset="0%" stop-color="#d1fae5"/>
+      <stop offset="35%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </radialGradient>
+
+    <!-- Glossy vertical highlight on body -->
+    <linearGradient id="atk-gloss" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Bottom shadow blur -->
+    <filter id="atk-shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
+
+  <!-- Ground shadow under product -->
+  <ellipse cx="200" cy="558" rx="118" ry="9" fill="#000000" opacity="0.18" filter="url(#atk-shadow)"/>
+
+  <!-- ===== BODY ===== -->
+  <rect x="100" y="120" width="200" height="420" rx="22" fill="url(#atk-body)"/>
+
+  <!-- Body subtle vertical gloss highlight -->
+  <rect x="118" y="138" width="22" height="384" rx="11" fill="url(#atk-gloss)"/>
+
+  <!-- Top body shading band -->
+  <rect x="100" y="120" width="200" height="22" rx="11" fill="#000000" opacity="0.16"/>
+
+  <!-- Bottom body shading band -->
+  <rect x="100" y="518" width="200" height="22" rx="11" fill="#000000" opacity="0.18"/>
+
+  <!-- ===== TOP CAP / SHOULDER ===== -->
+  <rect x="100" y="100" width="200" height="40" rx="20" fill="url(#atk-cap)"/>
+  <rect x="100" y="100" width="200" height="14" rx="7" fill="#ffffff" opacity="0.18"/>
+
+  <!-- ===== ROLLER BALL ===== -->
+  <ellipse cx="200" cy="92" rx="64" ry="26" fill="url(#atk-roller)"/>
+  <ellipse cx="200" cy="80" rx="64" ry="26" fill="url(#atk-roller)"/>
+  <ellipse cx="178" cy="68" rx="22" ry="6" fill="#ffffff" opacity="0.6"/>
+
+  <!-- ===== LABEL ===== -->
+  <rect x="118" y="220" width="164" height="200" rx="10" fill="#ffffff" opacity="0.97"/>
+
+  <!-- Label brand mark -->
+  <rect x="186" y="248" width="28" height="28" rx="6" fill="#ff5722"/>
+  <path d="M 192 261 L 198 267 L 208 257" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Brand name -->
+  <text x="200" y="305" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="900" fill="#0a0a0a" letter-spacing="-0.5">AlTokPe</text>
+
+  <!-- Divider -->
+  <line x1="158" y1="320" x2="242" y2="320" stroke="#ff5722" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Product type -->
+  <text x="200" y="346" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#0a0a0a" letter-spacing="2.5">QUITAMANCHAS</text>
+  <text x="200" y="362" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" fill="#0a0a0a" letter-spacing="2.5">PORTÁTIL</text>
+
+  <!-- Spec line -->
+  <text x="200" y="396" text-anchor="middle" font-family="ui-monospace, monospace" font-size="9" font-weight="500" fill="#57534e" letter-spacing="1.5">DOBLE CABEZAL · 15ML</text>
+
+  <!-- ===== BOTTOM ===== -->
+  <rect x="100" y="540" width="200" height="22" rx="6" fill="#0a0a0a"/>
+
+  <!-- Brush bristles -->
+  <g transform="translate(116, 562)">
+    <rect x="0"   y="0" width="4" height="18" rx="1" fill="#10b981"/>
+    <rect x="9"   y="0" width="4" height="20" rx="1" fill="#10b981"/>
+    <rect x="18"  y="0" width="4" height="17" rx="1" fill="#10b981"/>
+    <rect x="27"  y="0" width="4" height="22" rx="1" fill="#10b981"/>
+    <rect x="36"  y="0" width="4" height="18" rx="1" fill="#10b981"/>
+    <rect x="45"  y="0" width="4" height="21" rx="1" fill="#10b981"/>
+    <rect x="54"  y="0" width="4" height="17" rx="1" fill="#10b981"/>
+    <rect x="63"  y="0" width="4" height="20" rx="1" fill="#10b981"/>
+    <rect x="72"  y="0" width="4" height="22" rx="1" fill="#10b981"/>
+    <rect x="81"  y="0" width="4" height="18" rx="1" fill="#10b981"/>
+    <rect x="90"  y="0" width="4" height="21" rx="1" fill="#10b981"/>
+    <rect x="99"  y="0" width="4" height="17" rx="1" fill="#10b981"/>
+    <rect x="108" y="0" width="4" height="20" rx="1" fill="#10b981"/>
+    <rect x="117" y="0" width="4" height="22" rx="1" fill="#10b981"/>
+    <rect x="126" y="0" width="4" height="18" rx="1" fill="#10b981"/>
+    <rect x="135" y="0" width="4" height="21" rx="1" fill="#10b981"/>
+    <rect x="144" y="0" width="4" height="17" rx="1" fill="#10b981"/>
+    <rect x="153" y="0" width="4" height="20" rx="1" fill="#10b981"/>
+    <rect x="162" y="0" width="4" height="22" rx="1" fill="#10b981"/>
+  </g>
+
+  <!-- Edge subtle stroke for definition -->
+  <rect x="100" y="120" width="200" height="420" rx="22" fill="none" stroke="#000000" stroke-opacity="0.08" stroke-width="1"/>
+</svg>

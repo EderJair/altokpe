@@ -27,25 +27,27 @@ export function Hero() {
     offset: ["start start", "end start"],
   });
   const productY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const headlineY = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
   const stickerRotate = useTransform(scrollYProgress, [0, 1], [-8, 12]);
 
   return (
     <section
       ref={ref}
       id="top"
-      className="section-dark relative overflow-hidden pt-32 pb-20 lg:min-h-[100svh] lg:flex lg:items-center"
+      className="relative overflow-hidden pt-32 pb-20 lg:min-h-[100svh] lg:flex lg:items-center"
     >
-      {/* grid background */}
-      <div aria-hidden className="absolute inset-0 bg-stripes-grid pointer-events-none" />
+      {/* light grid background */}
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-stripes-grid-light pointer-events-none"
+      />
 
-      {/* diagonal orange stripes — bottom right accent */}
+      {/* diagonal orange stripes - bottom right accent (softer for light) */}
       <motion.div
         aria-hidden
         initial={{ opacity: 0, x: 100 }}
-        animate={{ opacity: 0.5, x: 0 }}
+        animate={{ opacity: 0.25, x: 0 }}
         transition={{ duration: 1, ease, delay: 0.4 }}
-        className="absolute -bottom-32 -right-20 h-[36rem] w-[60rem] -rotate-[18deg] bg-stripes opacity-50 pointer-events-none"
+        className="absolute -bottom-40 -right-20 h-[36rem] w-[60rem] -rotate-[18deg] bg-stripes pointer-events-none"
       />
 
       {/* corner brackets full screen */}
@@ -65,17 +67,16 @@ export function Hero() {
               <span>{"// Producto 01 / Quitamanchas"}</span>
             </motion.div>
 
-            <motion.h1
-              style={{ y: headlineY }}
-              className="text-display mt-8 text-[clamp(3.5rem,11vw,11rem)]"
-            >
+            <h1 className="text-display mt-8 text-[clamp(3rem,8vw,7.5rem)]">
               <RevealLine delay={0.1}>
                 <span>Manchas</span>
               </RevealLine>
               <RevealLine delay={0.2}>
-                <span>fuera<span className="text-primary">.</span></span>
+                <span>
+                  fuera<span className="text-primary">.</span>
+                </span>
               </RevealLine>
-            </motion.h1>
+            </h1>
 
             <motion.p
               initial={{ opacity: 0, y: 12 }}
@@ -102,16 +103,16 @@ export function Hero() {
                   className="transition-transform group-hover:translate-x-1"
                 />
               </button>
-              <button
-                onClick={() => open(featuredPlan.id)}
-                className="group flex items-center justify-between border border-foreground/30 px-6 py-4 text-sm font-semibold uppercase tracking-wider text-foreground transition-all hover:border-primary hover:text-primary"
+              <a
+                href="#precios"
+                className="group flex items-center justify-between border border-foreground/20 px-6 py-4 text-sm font-semibold uppercase tracking-wider text-foreground transition-all hover:border-primary hover:text-primary"
               >
                 <span>Ver precios</span>
                 <ArrowRight
                   size={18}
                   className="transition-transform group-hover:translate-x-1"
                 />
-              </button>
+              </a>
             </motion.div>
           </div>
 
@@ -120,7 +121,7 @@ export function Hero() {
             style={{ y: productY }}
             className="relative lg:col-span-5"
           >
-            <div className="bracket-frame relative mx-auto aspect-square w-full max-w-md">
+            <div className="bracket-frame relative mx-auto w-full max-w-md">
               <ProductShowcase />
             </div>
 
@@ -130,7 +131,7 @@ export function Hero() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, ease, delay: 0.9 }}
               style={{ rotate: stickerRotate }}
-              className="absolute -right-3 -top-6 grid h-28 w-28 place-items-center rounded-full bg-primary text-primary-foreground shadow-[0_12px_40px_-8px_rgba(255,87,34,0.6)] sm:h-32 sm:w-32"
+              className="absolute -right-2 -top-4 grid h-28 w-28 place-items-center rounded-full bg-primary text-primary-foreground shadow-[0_12px_40px_-8px_rgba(255,87,34,0.6)] sm:h-32 sm:w-32"
             >
               <div className="text-center leading-none">
                 <p className="text-[9px] font-medium uppercase tracking-widest opacity-80">
@@ -145,7 +146,7 @@ export function Hero() {
               </div>
             </motion.div>
 
-            {/* serial number sticker */}
+            {/* serial number */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -167,8 +168,13 @@ export function Hero() {
           className="mt-20 grid grid-cols-2 gap-px overflow-hidden border border-foreground/10 bg-foreground/10 sm:grid-cols-4 lg:mt-24"
         >
           {heroStats.map((stat) => (
-            <div key={stat.label} className="flex flex-col gap-2 bg-background p-5">
-              <span className="text-eyebrow text-foreground/50">{stat.label}</span>
+            <div
+              key={stat.label}
+              className="flex flex-col gap-2 bg-background p-5"
+            >
+              <span className="text-eyebrow text-foreground/50">
+                {stat.label}
+              </span>
               <span className="text-3xl font-black tracking-tight sm:text-4xl">
                 {stat.value}
               </span>
@@ -215,10 +221,10 @@ function RevealLine({
 function CornerBrackets() {
   return (
     <>
-      <div className="absolute left-6 top-24 h-12 w-12 border-l-2 border-t-2 border-primary/40" />
-      <div className="absolute right-6 top-24 h-12 w-12 border-r-2 border-t-2 border-primary/40" />
-      <div className="hidden absolute bottom-12 left-6 h-12 w-12 border-b-2 border-l-2 border-primary/40 lg:block" />
-      <div className="hidden absolute bottom-12 right-6 h-12 w-12 border-b-2 border-r-2 border-primary/40 lg:block" />
+      <div className="absolute left-6 top-24 h-12 w-12 border-l-2 border-t-2 border-primary/30" />
+      <div className="absolute right-6 top-24 h-12 w-12 border-r-2 border-t-2 border-primary/30" />
+      <div className="absolute bottom-12 left-6 hidden h-12 w-12 border-b-2 border-l-2 border-primary/30 lg:block" />
+      <div className="absolute bottom-12 right-6 hidden h-12 w-12 border-b-2 border-r-2 border-primary/30 lg:block" />
     </>
   );
 }
