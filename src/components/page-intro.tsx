@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
-const HOLD_MS = 3000;
-const EXIT_MS = 900;
+const HOLD_MS = 1100;
+const EXIT_MS = 700;
 
 export function PageIntro() {
   const [dismissed, setDismissed] = useState(false);

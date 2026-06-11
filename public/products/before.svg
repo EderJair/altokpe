@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none" role="img" aria-label="Polo con mancha antes de usar el quitamanchas">
+  <defs>
+    <linearGradient id="cloth-before" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eef1f4"/>
+      <stop offset="1" stop-color="#d7dde3"/>
+    </linearGradient>
+    <radialGradient id="stain" cx="50%" cy="45%" r="60%">
+      <stop offset="0" stop-color="#5c3012"/>
+      <stop offset="55%" stop-color="#8a4a1d" stop-opacity="0.92"/>
+      <stop offset="100%" stop-color="#a9621f" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <path d="M140 105 L170 105 Q200 132 230 105 L260 105 L300 130 L305 178 L266 167 L272 336 L128 336 L134 167 L95 178 L100 130 Z"
+    fill="url(#cloth-before)" stroke="#c2cad2" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M170 105 Q200 134 230 105" fill="none" stroke="#c2cad2" stroke-width="5" stroke-linecap="round"/>
+  <g>
+    <ellipse cx="200" cy="228" rx="44" ry="36" fill="url(#stain)"/>
+    <circle cx="168" cy="206" r="11" fill="#7a4119" opacity="0.7"/>
+    <circle cx="234" cy="250" r="9" fill="#7a4119" opacity="0.6"/>
+    <circle cx="224" cy="200" r="6" fill="#7a4119" opacity="0.5"/>
+    <circle cx="183" cy="262" r="6" fill="#7a4119" opacity="0.5"/>
+    <circle cx="206" cy="196" r="4" fill="#7a4119" opacity="0.45"/>
+  </g>
+</svg>

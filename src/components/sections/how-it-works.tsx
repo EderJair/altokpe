@@ -8,21 +8,21 @@ const steps = [
     number: "01",
     title: "Aplica",
     description:
-      "Pasa el roller con la fórmula directo sobre la mancha. No esperes a que se seque — mientras antes mejor.",
+      "Pasa el roller con la fórmula sobre la mancha. Mientras más fresca, mejor.",
     detail: "Roller con fórmula activa",
   },
   {
     number: "02",
     title: "Frota suave",
     description:
-      "Da vuelta al producto y usa el cepillo de silicona para activar la fórmula. Movimientos circulares, sin presión.",
+      "Da vuelta al producto y frota con el cepillo de silicona. Círculos suaves, sin fuerza.",
     detail: "Cepillo de silicona dual",
   },
   {
     number: "03",
     title: "Mancha fuera",
     description:
-      "Seca con un paño limpio. La mancha desaparece en segundos, sin marcas ni decoloración. Listo.",
+      "Seca con un paño. La mancha desaparece sin marcas ni decoloración.",
     detail: "Resultado en 3 segundos",
   },
 ];

@@ -14,6 +14,13 @@ import { Container } from "@/components/ui/container";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
+const specs = [
+  { value: "100%", label: "multi-tela" },
+  { value: "3s", label: "resultado" },
+  { value: "0%", label: "decolora" },
+  { value: "200+", label: "usos" },
+];
+
 export function Benefits() {
   return (
     <section id="beneficios" className="relative overflow-hidden bg-foreground text-background py-24 sm:py-40">
@@ -33,6 +40,23 @@ export function Benefits() {
               Pensado para que dejes de cambiarte de ropa cada vez que algo sale mal.
             </p>
           </div>
+        </div>
+
+        {/* Specs rápidas */}
+        <div className="mb-12 grid grid-cols-2 gap-px overflow-hidden border border-background/10 bg-background/10 sm:grid-cols-4">
+          {specs.map((spec) => (
+            <div
+              key={spec.label}
+              className="flex flex-col gap-1 bg-foreground p-5"
+            >
+              <span className="text-display text-4xl text-primary sm:text-5xl">
+                {spec.value}
+              </span>
+              <span className="text-eyebrow text-background/50">
+                {spec.label}
+              </span>
+            </div>
+          ))}
         </div>
 
         {/* Bento grid */}

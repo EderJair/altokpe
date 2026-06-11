@@ -3,7 +3,7 @@ import { OrderProvider } from "@/components/order-modal";
 import { Header } from "@/components/sections/header";
 import { Hero } from "@/components/sections/hero";
 import { Marquee } from "@/components/sections/marquee";
-import { SpecStrip } from "@/components/sections/spec-strip";
+import { ProductExplore } from "@/components/sections/product-explore";
 import { HowItWorks } from "@/components/sections/how-it-works";
 import { Benefits } from "@/components/sections/benefits";
 import { Pricing } from "@/components/sections/pricing";
@@ -20,8 +20,7 @@ export default function HomePage() {
         <main className="flex-1">
           <Hero />
           <Marquee />
-          <section id="producto" className="sr-only" aria-hidden />
-          <SpecStrip />
+          <ProductExplore />
           <HowItWorks />
           <Benefits />
           <Pricing />
