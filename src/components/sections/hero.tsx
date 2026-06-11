@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "motion/react";
 import { ArrowRight, Star, Truck, ShieldCheck, Wallet } from "lucide-react";
 import { Container } from "@/components/ui/container";
@@ -140,7 +139,7 @@ export function Hero() {
             transition={{ duration: 0.7, ease, delay: 0.3 }}
             className="lg:col-span-6"
           >
-            <BeforeAfter />
+            <ProductVideo />
           </motion.div>
         </div>
       </Container>
@@ -148,29 +147,23 @@ export function Hero() {
   );
 }
 
-function BeforeAfter() {
-  const { before, after } = product.beforeAfter;
-
+function ProductVideo() {
   return (
-    <div className="relative mx-auto w-full max-w-xl">
-      <div className="grid grid-cols-2 gap-px overflow-hidden border border-foreground/15 bg-foreground/10 shadow-2xl shadow-foreground/5">
-        <Panel
-          tag="Antes"
-          image={before}
-          tagClassName="bg-foreground/80 text-background"
+    <div className="relative mx-auto w-full max-w-[320px]">
+      <div className="relative aspect-9/16 overflow-hidden border border-foreground/15 bg-foreground/10 shadow-2xl shadow-foreground/10">
+        <video
+          src="/quitamanchas-demo.mp4"
+          poster="/products/quitamanchas.png"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          className="absolute inset-0 h-full w-full object-cover"
         />
-        <Panel
-          tag="Después"
-          image={after}
-          tagClassName="bg-primary text-primary-foreground"
-        />
-      </div>
-
-      {/* flecha central */}
-      <div className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
-        <div className="grid h-12 w-12 place-items-center rounded-full bg-background shadow-lg ring-1 ring-foreground/10">
-          <ArrowRight size={20} className="text-primary" />
-        </div>
+        <span className="absolute left-3 top-3 bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
+          Demo real
+        </span>
       </div>
 
       {/* etiqueta resultado */}
@@ -180,33 +173,5 @@ function BeforeAfter() {
         <span className="h-px w-6 bg-primary" />
       </div>
     </div>
-  );
-}
-
-function Panel({
-  tag,
-  image,
-  tagClassName,
-}: {
-  tag: string;
-  image: { src: string; alt: string };
-  tagClassName: string;
-}) {
-  return (
-    <figure className="relative aspect-square bg-background">
-      <Image
-        src={image.src}
-        alt={image.alt}
-        fill
-        priority
-        sizes="(max-width: 768px) 45vw, 280px"
-        className="object-contain p-6"
-      />
-      <figcaption
-        className={`absolute left-3 top-3 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${tagClassName}`}
-      >
-        {tag}
-      </figcaption>
-    </figure>
   );
 }
